@@ -1,0 +1,13 @@
+---
+    - name: Create output directory for device
+      file:
+        path: "{{save_dir}}"
+        state: directory
+
+    - name: Pass the junos commands and save the output 
+      juniper_junos_command:
+        provider: "{{ credentials.junos }}"
+        commands: "{{ item }}"
+        dest: "{{save_dir}}/{{ item }}.txt"
+      with_items: 
+        - "{{ dump.cli }}"

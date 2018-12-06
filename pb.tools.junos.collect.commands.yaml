@@ -1,0 +1,15 @@
+- name: collect data from devices
+  hosts: all
+  connection: local
+  gather_facts: no
+  pre_tasks:
+   - include_vars: "repository.cfg"
+   - include_vars: "inventory/collector-details.yml"
+  roles: 
+    - Juniper.junos
+    - collect-configuration
+    - collect-commands
+
+
+
+  

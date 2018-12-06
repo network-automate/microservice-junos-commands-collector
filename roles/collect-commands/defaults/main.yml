@@ -1,0 +1,5 @@
+---
+dump:
+  cli:
+    - "show chassis hardware"
+    - "show version"

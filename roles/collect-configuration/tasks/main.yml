@@ -1,0 +1,62 @@
+---
+  - name: Create output directory for device
+    file:
+      path: "{{save_dir}}"
+      state: directory
+      
+  - name: Collect configuration in text format from devices
+    junos_facts:
+      gather_subset: config
+      config_format: text
+      provider: "{{ credentials.junos }}"
+    register: "result_text"
+    when: dump.configuration.format == "text"
+
+  - name: Copy collected configuration in a local directory
+    copy: 
+      content: "{{ result_text.ansible_facts.ansible_net_config }}" 
+      dest: "{{save_dir}}/configuration-{{ inventory_hostname }}.conf"
+    when: dump.configuration.format == "text"
+
+  - name: Collect configuration in set format from devices
+    junos_facts:
+      gather_subset: config
+      config_format: set
+      provider: "{{ credentials.junos }}"
+    register: "result_set"
+    when: dump.configuration.format == "set"
+
+  - name: copy collected configuration in a local directory
+    copy:
+      content: "{{ result_set.ansible_facts.ansible_net_config }}"
+      dest: "{{save_dir}}/configuration-{{ inventory_hostname }}.set"
+    when: dump.configuration.format == "set"
+ 
+  - name: Collect configuration in json format from devices
+    junos_facts:
+      gather_subset: config
+      config_format: json
+      provider: "{{ credentials.junos }}"
+    register: "result_json"
+    when: dump.configuration.format == "json"
+
+  - name: copy collected configuration in a local directory
+    copy:
+      content: "{{ result_json.ansible_facts.ansible_net_config }}"
+      dest: "{{save_dir}}/configuration-{{ inventory_hostname }}.json"
+    when: dump.configuration.format == "json"
+
+  - name: Collect configuration in xml format from devices
+    junos_facts:
+      gather_subset: config
+      config_format: xml
+      provider: "{{ credentials.junos }}"
+    register: "result_xml"
+    when: dump.configuration.format == "xml"
+
+  - name: copy collected configuration in a local directory
+    copy:
+      content: "{{ result_xml.ansible_facts.ansible_net_config }}"
+      dest: "{{save_dir}}/configuration-{{ inventory_hostname }}.xml"
+    when: dump.configuration.format == "xml"
+
