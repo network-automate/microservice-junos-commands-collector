@@ -1,6 +1,6 @@
 # Description 
 
-This microservice provides a mechanism to collect Junos `show commands` and Junos `configuration` from Junos Device.  
+This microservice provides a mechanism to collect Junos `show commands` and Junos `configuration` from Junos Devices.  
 It uses Ansible. 
 
 # Requirements
