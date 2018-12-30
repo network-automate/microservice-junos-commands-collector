@@ -9,14 +9,14 @@ Install Docker
 
 # Inputs
 
-You need to provide 2 files
-- An Ansible Inventory file (`inventory.ini`) with following elements:
+You need to provide 2 files:
+- A YAML file to indicate the desired format for Junos `configuration`, and the list of desired `show commands`.   
+- An Ansible Inventory file (`inventory.ini`) with following variables:
   - `ansible_host`: IP of the device
-  - `netconf_port`: netconf port uses to connect to devices (default is 830)
+  - `netconf_port`: netconf port to use to connect to devices (default is 830)
   - `ansible_ssh_private_key`: Private key to use to authenticate against devices (Optional)
   - `ansible_ssh_user`: Username to use for the connection
   - `ansible_ssh_pass`: Password to use for the connection (Optional if private key is configured)
-- A YAML file to indicate the desired format for Junos `configuration`, and the list of desired `show commands`.  
 
 You will find examples below.  
 
@@ -32,16 +32,16 @@ $ docker images jnprautomate/junos-command-collector
 REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
 jnprautomate/junos-command-collector   latest              e77270e113e8        16 seconds ago      361MB
 ```
-List containers (there is no container)
+List containers (there is no container instanciated with the above image)
 ```
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 Create this structure
-- inputs directory
-   - with an ansible `inventory.ini` file 
-   - A YAML file to indicate the desired format for Junos `configuration`, and the list of desired `show commands` .    
-- outputs directory
+- `inputs` directory
+   - with an ansible `inventory.ini` file (see above for the details, and below for an example) 
+   - A YAML file to indicate the desired format for Junos `configuration`, and the list of desired `show commands` (see below for an example)      
+- `outputs` directory
 ```
 $ tree
 .
@@ -78,7 +78,7 @@ dump:
     - "show version"
 ```
 
-Run this microservice: This will instanciate a container, execute the service, and remove the container.  
+Run the microservice: This will instanciate a container, execute the service, and remove the container.  
 ```
 $ docker run -it --rm -v ${PWD}/inputs:/inventory -v ${PWD}/outputs:/outputs jnprautomate/junos-command-collector
 Collect Junos commands
@@ -142,12 +142,12 @@ PLAY RECAP *********************************************************************
 demo-qfx10k2-14            : ok=6    changed=2    unreachable=0    failed=0
 demo-qfx10k2-15            : ok=6    changed=2    unreachable=0    failed=0
 ```
-The container doesnt exist anymore
+List the containers. The container doesnt exist anymore
 ```
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
-Here's the output
+Here's the output generated
 ```
 $ tree
 .
